@@ -79,16 +79,16 @@ class Login extends Component {
  */
 
 handleLogin = (username, password) => {
-  if (isEmpty(username) || isEmpty(password)) {
-    console.log("empty");
-  }
+  // if (isEmpty(username) || isEmpty(password)) {
+  //   console.log("empty");
+  // }
 };
 
-isEmpty = str => {
-  if (str == "" || str == null) {
-    return true;
-  } else return false;
-};
+// isEmpty = str => {
+//   if (str == "" || str == null) {
+//     return true;
+//   } else return false;
+// };
 /**
  * Change to sign in screen
  */

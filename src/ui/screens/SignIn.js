@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { YellowBox } from 'react-native';
 import { Container, Content, Form, Label, Input,Item } from 'native-base';
 
 // Import Components
@@ -7,9 +7,14 @@ import HeaderWithBackIcon from "../components/HeaderWithBackIcon";
 import ItemEditText from '../components/ItemEditText';
 import ButtonCus from '../components/ButtonCus';
 
+// Import script 
+import DataHandler from '../../scripts/dataHandler';
+const handler = new DataHandler();
 class SignIn extends Component {
   constructor(props) {
     super(props);
+    // disable warning
+    console.ignoredYellowBox = ['Warning:']
     this.state = {
       headerTitle: "Register new account",
       lblUserName: "Username",
@@ -17,9 +22,9 @@ class SignIn extends Component {
       lblRePwd: "Retype password",
       lblLogin: "Login",
       lblCancel: "Cancel",
-      txtUserName: "",
-      txtPwd: "",
-      txtRetypePwd: ""
+      txtUserName: null,
+      txtPwd: null,
+      txtRetypePwd: null
     };
   }
   render() {
@@ -52,7 +57,7 @@ class SignIn extends Component {
             {/* Button group */}
             <Form>
                 <ButtonCus
-                    onPress = {()=>{}}
+                    onPress = {this.handleRegister}
                     txtLabel = {this.state.lblLogin}
                 />
                 <ButtonCus
@@ -67,12 +72,35 @@ class SignIn extends Component {
   /**
    * Functions handle work
    */
-
    // Login
-   handleLogin = () =>{
+   handleRegister = () =>{
+    let usn = handler.isEmpty(this.state.txtUserName);
+    let pwd = handler.isEmpty(this.state.txtPwd);
+    let rePwd = handler.isEmpty(this.state.txtRetypePwd);
 
+    if(!usn & !pwd & !rePwd){
+      // Check pwd and retype same
+      if(this.isSamePwd()){
+        console.log("Same")
+      }else{
+        console.log("Not Same")
+      }
+    }else{
+      console.log("Empty")
+    }
+
+    
+   }
+
+   // Compare between pwd and retype pwd
+   isSamePwd = () => {
+     let pwd = this.state.txtPwd;
+     let retype = this.state.txtRetypePwd;
+     if(pwd === retype){
+      return true;
+     }
+     return false;
    }
 }
-
 
 export default SignIn;
