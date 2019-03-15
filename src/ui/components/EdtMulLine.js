@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import { Input, Item, Label } from "native-base";
-
-import {edtCustom} from "../../styles/componentsStyle";
-
-export default class ItemEditText extends Component {
+import {edtMulLine} from '../../styles/componentsStyle';
+export default class EdtMulLine extends Component {
   render() {
     return (
       <Item floatingLabel>
         <Label>{this.props.label}</Label>
         <Input 
-            style={edtCustom.container}
-            secureTextEntry = {this.props.secureTextEntry} 
+            multiline = {true}
+            style ={edtMulLine.container}
             onChangeText = {this.props.onChangeText}
             />
       </Item>
