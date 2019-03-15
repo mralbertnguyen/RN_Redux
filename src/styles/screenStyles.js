@@ -12,7 +12,7 @@ const home = StyleSheet.create({
         backgroundColor: "#5067FF"
     },
     fabIcon:{
-
+        fontSize : 30
     }
 })
 

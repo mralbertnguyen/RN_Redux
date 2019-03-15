@@ -6,6 +6,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import Login from "../screens/Login";
 import SignIn from "../screens/SignIn";
 import Home from "../screens/Home";
+import Note from "../screens/Note";
 
 const MainNavigation = createStackNavigator(
   {
