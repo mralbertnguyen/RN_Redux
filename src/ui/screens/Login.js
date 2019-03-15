@@ -2,11 +2,14 @@ import React, { Component } from "react";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import { Input, Button } from "react-native-elements";
+import { Container, Content, Form ,Headers} from "native-base";
 
-import { View, Dimensions, StyleSheet } from "react-native";
+import { View, Dimensions, StyleSheet, YellowBox } from "react-native";
 
-import EditTextCustom from "../components/EditText";
+import ItemEditText from "../components/ItemEditText";
+import ButtonCus from "../components/ButtonCus";
+import DataHandler from "../../scripts/dataHandler";
+const handler = new DataHandler();
 
 /**
  * Login page structures
@@ -22,52 +25,73 @@ import EditTextCustom from "../components/EditText";
 class Login extends Component {
   constructor(props) {
     super(props);
+    // Disable Warning
+    console.ignoredYellowBox = ["Warning:"];
     this.state = {
       userNameErrorMessage: "Please type username",
       passwordErrorMessage: "Please type password",
 
+      lblUsn: "Username",
+      lblPwd: "Password",
+
       txtBtnSignIn: "Sign In",
       txtBtnLogin: "Login",
 
-      username: null,
-      password: null
+      txtUsn: null,
+      txtPwd: null
     };
   }
 
   render() {
     return (
-      <View style={loginStyle.container}>
-        {/* Customize input with customize icon */}
-        <Input
-          placeholder="User name"
-          leftIcon={<Icon name="user" size={24} color="black" />}
-          errorStyle={loginStyle.error}
-          shake={true}
-          onChangeText={_username => {
-            this.setState({
-              username: _username
-            });
-          }}
-          errorMessage={this.state.userNameErrorMessage}
-        />
+      <Container>
+        <Content>
+          <Form>
+            {/* Type username */}
+            <ItemEditText
+              label={this.state.lblUsn}
+              secureTextEntry={false}
+              onChangeText={usn => {
+                this.setState({ txtUsn: usn });
+              }}
+            />
+            {/* Type password */}
+            <ItemEditText
+            label={this.state.lblPwd}
+              secureTextEntry={true}
+              onChangeText={pwd => {
+                this.setState({ txtPwd: pwd });
+              }}
+            />
+          </Form>
 
-        <EditTextCustom placeholder={"User name"} />
-        {/* Button login */}
-        <Button
-          title={this.state.txtBtnLogin}
-          onPress={() => handleLogin(this.state.username, this.state.password)}
-          type="outline"
-          raised={true}
-        />
-        <Button
-          title={this.state.txtBtnSignIn}
-          onPress={this.changeToSignIn}
-          type="outline"
-          raised={true}
-        />
-      </View>
+          <Form>
+            {/* Button login */}
+            <ButtonCus
+              txtLabel={this.state.txtBtnLogin}
+              onPress={() =>
+                handleLogin(this.state.username, this.state.password)
+              }
+            />
+            <ButtonCus
+              txtLabel={this.state.txtBtnSignIn}
+              onPress={this.changeToSignIn}
+            />
+          </Form>
+        </Content>
+      </Container>
     );
   }
+  handleLogin = (username, password) => {
+    let usn = handler.isEmpty(username);
+    let pwd = handler.isEmpty(password);
+
+    if (!usn & !pwd) {
+      console.log("OK");
+    } else {
+      console.log("Empty");
+    }
+  };
 }
 
 /**
@@ -78,17 +102,6 @@ class Login extends Component {
  * get data from database and compare
  */
 
-handleLogin = (username, password) => {
-  // if (isEmpty(username) || isEmpty(password)) {
-  //   console.log("empty");
-  // }
-};
-
-// isEmpty = str => {
-//   if (str == "" || str == null) {
-//     return true;
-//   } else return false;
-// };
 /**
  * Change to sign in screen
  */
@@ -102,7 +115,6 @@ const loginStyle = StyleSheet.create({
     width: width,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center"
   },
   form: {
     flexDirection: "column",
