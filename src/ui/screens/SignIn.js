@@ -28,6 +28,7 @@ class SignIn extends Component {
     };
   }
   render() {
+    const {goBack} = this.props.navigation;
     return (
       <Container>
       {/* Custom header */}
@@ -88,10 +89,7 @@ class SignIn extends Component {
     }else{
       console.log("Empty")
     }
-
-    
    }
-
    // Compare between pwd and retype pwd
    isSamePwd = () => {
      let pwd = this.state.txtPwd;
@@ -100,6 +98,10 @@ class SignIn extends Component {
       return true;
      }
      return false;
+   }
+   // Cancel => back to login screen
+   handleCancel = () => {
+    goBack()
    }
 }
 
