@@ -1,22 +1,28 @@
 import {
     REGISTER_URL
 } from '../constant/constant';
+import axios from 'axios';
 
 export default class APIs {
     // register new user 
-    registerUser  = (usn, pwd) => {
-        fetch(REGISTER_URL,{
-            method : 'POST',
-            body : JSON.stringify({
-                username : usn,
-                password : pwd
-            } ),
-        }).then((response) => {
-            console.log("response" + response);
-        })
-        .then((resultResponse) => {
-            console.log("Result" + resultResponse);
-            return resultResponse;
-        }).done();
+    registerUser  = async (usn, pwd) => {
+        console.log('u: ' + usn +'\n' + pwd );
+        try {
+            let res = await axios.post(REGISTER_URL, {
+                username: usn,
+                password: pwd
+            })
+            .then(response => { 
+                console.log("Data return: " + response)
+            })
+            .catch(error => {
+                console.log("Response error: " + error.response)
+            });
+          } catch (e) {
+            console.log("Error: " + e.response) // undefined
+          }
+        
     }
+
+   
 }

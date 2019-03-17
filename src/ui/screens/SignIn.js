@@ -87,7 +87,7 @@ class SignIn extends Component {
       if(this.isSamePwd()){
         console.log("Same");
         try{
-          apis.registerUser(usn, pwd);
+          apis.registerUser(this.state.txtUserName, this.state.txtPwd);
         }catch(e){
           console.log("error: "+e.getMessage());
         }
