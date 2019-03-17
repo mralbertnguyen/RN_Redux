@@ -31,7 +31,7 @@ const MainNavigation = createStackNavigator(
 
 const AppNavigator = createAppContainer(MainNavigation);
 
-export default class App extends React.Component {
+export default class Main extends React.Component {
   render() {
     return <AppNavigator />;
   }
