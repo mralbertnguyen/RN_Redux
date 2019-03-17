@@ -10,6 +10,9 @@ import ButtonCus from '../components/ButtonCus';
 // Import script 
 import DataHandler from '../../scripts/dataHandler';
 const handler = new DataHandler();
+
+import APIs from '../../api/apiCentral';
+const apis = new APIs();
 class SignIn extends Component {
   constructor(props) {
     super(props);
@@ -82,12 +85,17 @@ class SignIn extends Component {
     if(!usn & !pwd & !rePwd){
       // Check pwd and retype same
       if(this.isSamePwd()){
-        console.log("Same")
+        console.log("Same");
+        try{
+          apis.registerUser(usn, pwd);
+        }catch(e){
+          console.log("error: "+e.getMessage());
+        }
       }else{
-        console.log("Not Same")
+        console.log("Not Same");
       }
     }else{
-      console.log("Empty")
+      console.log("Empty");
     }
    }
    // Compare between pwd and retype pwd

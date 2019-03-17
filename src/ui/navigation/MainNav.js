@@ -22,7 +22,6 @@ const MainNavigation = createStackNavigator(
     Login: {
       screen: Login
     },
-    
   },
   {
     headerMode: "none"
