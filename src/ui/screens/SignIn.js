@@ -6,7 +6,7 @@ import { Container, Content, Form, Label, Input,Item } from 'native-base';
 import HeaderWithBackIcon from "../components/HeaderWithBackIcon";
 import ItemEditText from '../components/ItemEditText';
 import ButtonCus from '../components/ButtonCus';
-
+// import SpinnerCus from '../components/SpinnerCus';
 // Import script 
 import DataHandler from '../../scripts/dataHandler';
 const handler = new DataHandler();
@@ -27,7 +27,8 @@ class SignIn extends Component {
       lblCancel: "Cancel",
       txtUserName: null,
       txtPwd: null,
-      txtRetypePwd: null
+      txtRetypePwd: null,
+      spinnerVisible: false
     };
   }
   render() {
@@ -37,6 +38,10 @@ class SignIn extends Component {
       {/* Custom header */}
         <HeaderWithBackIcon title={this.state.headerTitle} />
         <Content>
+            {/* Custom spinner */}
+            {/* <SpinnerCus
+              visible = {this.state.spinnerVisible}
+            /> */}
             {/* Form to type information */}
             <Form>
                 {/* User name */}
@@ -87,7 +92,9 @@ class SignIn extends Component {
       if(this.isSamePwd()){
         console.log("Same");
         try{
+          this.setState({spinnerVisible : true})
           apis.registerUser(this.state.txtUserName, this.state.txtPwd);
+          this.setState({spinnerVisible : false})
         }catch(e){
           console.log("error: "+e.getMessage());
         }

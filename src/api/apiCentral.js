@@ -13,13 +13,16 @@ export default class APIs {
                 password: pwd
             })
             .then(response => { 
-                console.log("Data return: " + response)
+                console.log(response.data)
+                return response.data;
             })
             .catch(error => {
-                console.log("Response error: " + error.response)
+                console.log(error.response.data)
+                return error.response.data;
             });
           } catch (e) {
             console.log("Error: " + e.response) // undefined
+            return e.response;
           }
         
     }
