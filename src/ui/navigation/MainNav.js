@@ -10,6 +10,9 @@ import Note from "../screens/Note";
 
 const MainNavigation = createStackNavigator(
   {
+    Login: {
+      screen: Login
+    },
     SignIn: {
       screen: SignIn
     },
@@ -19,9 +22,7 @@ const MainNavigation = createStackNavigator(
     Home: {
       screen: Home
     },
-    Login: {
-      screen: Login
-    },
+    
   },
   {
     headerMode: "none"

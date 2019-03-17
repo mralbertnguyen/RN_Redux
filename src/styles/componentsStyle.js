@@ -47,5 +47,42 @@ const edtMulLine = StyleSheet.create({
     height: 300
   }
 });
+
+const modalCus = StyleSheet.create({
+  container: { 
+      flex :  1,
+      alignItems : 'center',
+      justifyContent : 'center',
+  },
+  brg : {
+    width : width,
+    height : height,
+    position : 'absolute',
+    backgroundColor : 'black',
+    opacity : 0.2
+  },
+  panel : {
+    height : height * 0.2,
+    width : width * 0.6,
+    backgroundColor : 'white',
+    justifyContent : 'center',
+    alignItems : 'center',
+    borderRadius : 10,
+  },
+  message : {
+    fontSize : 20,
+  },
+  btn : {
+    height : height * 0.05,
+    width : width * 0.6,
+    backgroundColor : 'green',
+    alignItems : 'center',
+    justifyContent : 'center'
+  },
+  btnLabel : {
+  fontSize : 25,
+}
+})
+
 // Export style's components
-export { cusButton, editTextCustom, itemCustom, edtMulLine ,edtCustom};
+export { cusButton, editTextCustom, itemCustom, edtMulLine ,edtCustom, modalCus};

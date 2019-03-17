@@ -6,7 +6,8 @@ import { Container, Content, Form, Label, Input,Item } from 'native-base';
 import HeaderWithBackIcon from "../components/HeaderWithBackIcon";
 import ItemEditText from '../components/ItemEditText';
 import ButtonCus from '../components/ButtonCus';
-// import SpinnerCus from '../components/SpinnerCus';
+import SpinnerCus from '../components/SpinnerCus';
+import ModalCus from '../components/ModalCus';
 // Import script 
 import DataHandler from '../../scripts/dataHandler';
 const handler = new DataHandler();
@@ -28,7 +29,9 @@ class SignIn extends Component {
       txtUserName: null,
       txtPwd: null,
       txtRetypePwd: null,
-      spinnerVisible: false
+      spinnerVisible: false,
+      modalVisible : false,
+      modalMessage : null
     };
   }
   render() {
@@ -38,10 +41,18 @@ class SignIn extends Component {
       {/* Custom header */}
         <HeaderWithBackIcon title={this.state.headerTitle} />
         <Content>
+            {/* Custom Modal popup */}
+            <ModalCus
+              visible = {this.state.modalVisible}
+              message = {this.state.modalMessage}
+              onPressOK = {()=>{
+                console.log("Press ok");
+                this.setState({modalVisible : false})}}
+            />
             {/* Custom spinner */}
-            {/* <SpinnerCus
+            <SpinnerCus
               visible = {this.state.spinnerVisible}
-            /> */}
+            />
             {/* Form to type information */}
             <Form>
                 {/* User name */}
@@ -82,7 +93,7 @@ class SignIn extends Component {
    * Functions handle work
    */
    // Login
-   handleRegister = () =>{
+   handleRegister = async () =>{
     let usn = handler.isEmpty(this.state.txtUserName);
     let pwd = handler.isEmpty(this.state.txtPwd);
     let rePwd = handler.isEmpty(this.state.txtRetypePwd);
@@ -90,11 +101,15 @@ class SignIn extends Component {
     if(!usn & !pwd & !rePwd){
       // Check pwd and retype same
       if(this.isSamePwd()){
-        console.log("Same");
         try{
           this.setState({spinnerVisible : true})
-          apis.registerUser(this.state.txtUserName, this.state.txtPwd);
-          this.setState({spinnerVisible : false})
+          // Call API
+          let result = await apis.registerUser(this.state.txtUserName, this.state.txtPwd);
+          this.setState({
+            spinnerVisible : false,
+          })
+          this.showResult(result);
+          
         }catch(e){
           console.log("error: "+e.getMessage());
         }
@@ -105,6 +120,22 @@ class SignIn extends Component {
       console.log("Empty");
     }
    }
+
+   // Show result return from API
+   showResult = (result) => {
+    console.log("Result: " + result.message);
+     
+    let message = result.message;
+    // console.log(parsedJson.toString());
+
+    this.setState({
+      modalVisible : true,
+      modalMessage : message,
+    })
+
+    // GET STATUS
+   }
+
    // Compare between pwd and retype pwd
    isSamePwd = () => {
      let pwd = this.state.txtPwd;

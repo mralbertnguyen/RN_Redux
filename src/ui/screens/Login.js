@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 
-import Icon from "react-native-vector-icons/FontAwesome";
+import { Container, Content, Form } from "native-base";
 
-import { Container, Content, Form ,Headers} from "native-base";
-
-import { View, Dimensions, StyleSheet, YellowBox } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 import ItemEditText from "../components/ItemEditText";
 import ButtonCus from "../components/ButtonCus";
+import SpinnerCus from "../components/SpinnerCus";
+import ModalCus from "../components/ModalCus";
+
 import DataHandler from "../../scripts/dataHandler";
 const handler = new DataHandler();
 
+import APIs from "../../api/apiCentral";
+const api = new APIs();
 /**
  * Login page structures
  * Logo
@@ -26,7 +29,6 @@ class Login extends Component {
   constructor(props) {
     super(props);
     // Disable Warning
-    console.ignoredYellowBox = ["Warning:"];
     this.state = {
       userNameErrorMessage: "Please type username",
       passwordErrorMessage: "Please type password",
@@ -38,7 +40,11 @@ class Login extends Component {
       txtBtnLogin: "Login",
 
       txtUsn: null,
-      txtPwd: null
+      txtPwd: null,
+
+      spinnerVisible: false,
+      modalVisible: false,
+      modalMessage: null
     };
   }
 
@@ -47,6 +53,17 @@ class Login extends Component {
       <Container>
         <Content>
           <Form>
+            <ModalCus
+              visible={this.state.modalVisible}
+              message={this.state.modalMessage}
+              onPressOK={() => {
+                console.log("Press ok");
+                this.setState({ modalVisible: false });
+              }}
+            />
+            {/* Custom spinner */}
+            <SpinnerCus visible={this.state.spinnerVisible} />
+
             {/* Type username */}
             <ItemEditText
               label={this.state.lblUsn}
@@ -57,7 +74,7 @@ class Login extends Component {
             />
             {/* Type password */}
             <ItemEditText
-            label={this.state.lblPwd}
+              label={this.state.lblPwd}
               secureTextEntry={true}
               onChangeText={pwd => {
                 this.setState({ txtPwd: pwd });
@@ -70,7 +87,7 @@ class Login extends Component {
             <ButtonCus
               txtLabel={this.state.txtBtnLogin}
               onPress={() =>
-                handleLogin(this.state.username, this.state.password)
+                this.handleLogin(this.state.txtUsn, this.state.txtPwd)
               }
             />
             <ButtonCus
@@ -82,15 +99,41 @@ class Login extends Component {
       </Container>
     );
   }
-  handleLogin = (username, password) => {
+  handleLogin = async (username, password) => {
     let usn = handler.isEmpty(username);
     let pwd = handler.isEmpty(password);
 
     if (!usn & !pwd) {
       console.log("OK");
+      // Enable spinner
+      this.setState({
+        spinnerVisible: true
+      });
+      let result = await api.userLogin(username, password);
+      // Disable spinner
+      this.setState({
+        spinnerVisible: false
+      });
+
+      // Success to move to Home disable back 
+      if(result.status == "SUCCESS"){
+        // Change to Home
+        this.props.navigation.navigate('Home');
+      }else{
+        this.showResult(result.message);
+      }
+      
     } else {
-      console.log("Empty");
+      this.showResult("Please type username and password!");
     }
+  };
+
+  showResult = message => {
+    // enable modal with message return from result
+    this.setState({
+      modalVisible: true,
+      modalMessage: message
+    });
   };
 }
 
@@ -114,7 +157,7 @@ const loginStyle = StyleSheet.create({
     height: height,
     width: width,
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   form: {
     flexDirection: "column",
