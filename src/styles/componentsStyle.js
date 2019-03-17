@@ -55,8 +55,8 @@ const modalCus = StyleSheet.create({
       justifyContent : 'center',
   },
   brg : {
-    width : width,
-    height : height,
+    width : '100%',
+    height : '100%',
     position : 'absolute',
     backgroundColor : 'black',
     opacity : 0.2

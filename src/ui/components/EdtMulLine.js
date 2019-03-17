@@ -8,6 +8,7 @@ export default class EdtMulLine extends Component {
         <Label>{this.props.label}</Label>
         <Input 
             multiline = {true}
+            value = {this.props.text}
             style ={edtMulLine.container}
             onChangeText = {this.props.onChangeText}
             />

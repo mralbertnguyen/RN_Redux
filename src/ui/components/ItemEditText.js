@@ -10,6 +10,7 @@ export default class ItemEditText extends Component {
         <Label>{this.props.label}</Label>
         <Input 
             style={edtCustom.container}
+            value={this.props.text}
             secureTextEntry = {this.props.secureTextEntry} 
             onChangeText = {this.props.onChangeText}
             />

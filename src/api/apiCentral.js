@@ -1,6 +1,9 @@
 import {
     REGISTER_URL,
-    LOGIN_URL
+    LOGIN_URL,
+    ADD_NOTE_URL,
+    GET_ALL_NOTE_URL,
+    DELETE_NOTE_URL
 } from '../constant/constant';
 import axios from 'axios';
 
@@ -28,7 +31,7 @@ export default class APIs {
           }
         
     }
-
+    
     userLogin = async (usn, pwd) => {
         try{
             let login = await axios.post(LOGIN_URL,{
@@ -47,5 +50,56 @@ export default class APIs {
         }
     }
 
-   
+    // Create new note 
+    addNewNote = async (title, desc) => {
+        try{
+            let add = await axios.post(ADD_NOTE_URL,{
+                title : title,
+                desc : desc
+            })
+            .then( response => {
+                return response.data;
+            }).catch(error =>{
+                return error.response.data
+            });
+
+            return add;
+        }catch(e){
+            return e.response;
+        }
+    }
+
+    // Get note 
+    getAllNote = async () => {
+        try{
+            let add = await axios.get(GET_ALL_NOTE_URL)
+            .then( response => {
+                return response.data;
+            }).catch(error =>{
+                return error.response.data
+            });
+
+            return add;
+        }catch(e){
+            return e.response;
+        }
+    }
+
+    // Get note 
+    deleteNote = async (id) => {
+        try{
+            let deleted = await axios.post(DELETE_NOTE_URL,{
+                id :id
+            })
+            .then( response => {
+                return response.data;
+            }).catch(error =>{
+                return error.response.data
+            });
+
+            return deleted;
+        }catch(e){
+            return e.response;
+        }
+    }
 }
