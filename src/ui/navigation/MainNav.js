@@ -10,6 +10,9 @@ import Note from "../screens/Note";
 
 const MainNavigation = createStackNavigator(
   {
+    SignIn: {
+      screen: SignIn
+    },
     Note: {
       screen: Note
     },
@@ -19,9 +22,7 @@ const MainNavigation = createStackNavigator(
     Login: {
       screen: Login
     },
-    SignIn: {
-      screen: SignIn
-    },
+    
   },
   {
     headerMode: "none"
@@ -31,7 +32,7 @@ const MainNavigation = createStackNavigator(
 
 const AppNavigator = createAppContainer(MainNavigation);
 
-export default class Main extends React.Component {
+export default class MainNav extends React.Component {
   render() {
     return <AppNavigator />;
   }
