@@ -20,7 +20,7 @@ class HeaderWithBackIcon extends Component{
         return(
             <Header>
                 <Left style = {headerStyle.left}>
-                    <Button transparent>
+                    <Button onPress={this.props.onPress} transparent>
                         <Icon name = 'arrow-back'/>
                     </Button>
                 </Left>

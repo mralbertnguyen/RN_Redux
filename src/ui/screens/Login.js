@@ -92,7 +92,7 @@ class Login extends Component {
             />
             <ButtonCus
               txtLabel={this.state.txtBtnSignIn}
-              onPress={this.changeToSignIn}
+              onPress={()=>{this.props.navigation.navigate('SignIn')}}
             />
           </Form>
         </Content>

@@ -39,7 +39,7 @@ class SignIn extends Component {
     return (
       <Container>
       {/* Custom header */}
-        <HeaderWithBackIcon title={this.state.headerTitle} />
+        <HeaderWithBackIcon onPress={()=>{goBack()}} title={this.state.headerTitle} />
         <Content>
             {/* Custom Modal popup */}
             <ModalCus
@@ -82,6 +82,7 @@ class SignIn extends Component {
                 />
                 <ButtonCus
                     txtLabel = {this.state.lblCancel}
+                    onPress = {()=>{goBack()}}
                 />
             </Form>
         </Content>
@@ -146,9 +147,6 @@ class SignIn extends Component {
      return false;
    }
    // Cancel => back to login screen
-   handleCancel = () => {
-    goBack()
-   }
 }
 
 export default SignIn;
