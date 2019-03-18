@@ -1,7 +1,8 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions ,Platform} from "react-native";
 
 const { height, width } = Dimensions.get("window");
-
+const yellowDark = "#F3CD10";
+const alphaGray = "rgba(112, 112, 112 , 0.56)";
 const editTextCustom = StyleSheet.create({
   container: {}
 });
@@ -18,20 +19,32 @@ const cusButton = StyleSheet.create({
 
 const itemCustom = StyleSheet.create({
   container: {
-    backgroundColor: "red",
-    margin: 10,
-    width: width * 0.8,
-    height: height * 0.1,
+    backgroundColor: "rgba(112, 112, 112 , 0.56)",
+    padding : 10,
+    marginTop : 10,
+    marginBottom: 10,
+    borderRadius : 5,
+    width: width * 0.9,
+    height: height * 0.14,
     alignSelf: "center",
     justifyContent: "center",
-    flexDirection: "column"
+    flexDirection: "column",
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowOffset : {
+      width : 0,
+      height : 3,
+    }
   },
   title: {
-    fontSize: 40,
+    fontSize: 30,
+    color: 'white',
+    fontWeight: 'bold',
     alignSelf: "flex-start"
   },
   desc: {
     fontSize: 25,
+    color: 'white',
     alignSelf: "flex-start"
   }
 });

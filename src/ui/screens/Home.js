@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ListView, Text } from "react-native";
+import { View, ListView, Text,DeviceEventEmitter } from "react-native";
 import {
   Container,
   Header,
@@ -19,8 +19,6 @@ import SpinnerCus from "../components/SpinnerCus";
 
 import APIs from "../../api/apiCentral";
 const apis = new APIs();
-
-import {connect} from 'react-redux'
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -29,14 +27,21 @@ class Home extends Component {
       isActiveFab: "true",
       listViewData: store.list,
       txtEmpty: "No note",
-      spinnerVisible: false
+      spinnerVisible: false,
+      txtEdit : 'Edit',
+      txtDel : 'Del'
     };
   }
 
-  componentWillMount = () => {
-    // this.fletchData();
-  };
+  componentWillMount = async () => {
+    this.fletchData();
+    DeviceEventEmitter.addListener('update list', (e)=>{
+      this.fletchData();
+      console.log("back from note page" + e);
+    })
 
+  };
+  
   fletchData = async () => {
     // Enable spinner
     this.setState({
@@ -47,6 +52,9 @@ class Home extends Component {
       listViewData: list.data,
       spinnerVisible: false
     });
+
+    console.log("data fletch");
+
   };
 
   deleteRow = async (id, secId, rowId, rowMap) => {
@@ -61,6 +69,13 @@ class Home extends Component {
   };
 
   update = data => {
+
+    this.props.navigation.navigate('Note',{
+      id : data.id,
+      title : data.title,
+      desc : data.desc
+    })
+
     console.log(data.id);
     console.log(data.title);
     console.log(data.desc);
@@ -69,72 +84,73 @@ class Home extends Component {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
+
     if (this.state.listViewData == null) {
       return (
-          <Container>
-            <Header />
-            <View style={home.container}>
-              <SpinnerCus visible={this.state.spinnerVisible} />
-              {/* List to show note list */}
-              <View style={home.viewTxtEmpty}>
-                <Text style={home.txtEmpty}>{this.state.txtEmpty}</Text>
-              </View>
-              {/* Float button to add new note */}
-              <Fab
-                active={this.state.isActiveFab}
-                style={home.fabContainer}
-                position="bottomRight"
-                onPress={() => this.onPressFloatButton()}
-              >
-                {/* Icon add  */}
-                <Icon style={home.fabIcon} name="add" />
-              </Fab>
+        <Container>
+          <Header />
+          <View style={home.container}>
+            <SpinnerCus visible={this.state.spinnerVisible} />
+            {/* List to show note list */}
+            <View style={home.viewTxtEmpty}>
+              <Text style={home.txtEmpty}>{this.state.txtEmpty}</Text>
             </View>
-          </Container>
+            {/* Float button to add new note */}
+            <Fab
+              active={this.state.isActiveFab}
+              style={home.fabContainer}
+              position="bottomRight"
+              onPress={() => this.onPressFloatButton()}
+            >
+              {/* Icon add  */}
+              <Icon style={home.fabIcon} name="add" />
+            </Fab>
+          </View>
+        </Container>
       );
     } else {
       return (
-          <Container>
-            <Header />
-            <View style={home.container}>
-              {/* Custom Modal popup */}
-              {/* Custom spinner */}
-              <SpinnerCus visible={this.state.spinnerVisible} />
-              {/* List to show note list */}
-              <List
-                leftOpenValue={75}
-                rightOpenValue={-75}
-                dataSource={this.ds.cloneWithRows(this.state.listViewData)}
-                renderRow={data => (
-                  <ItemListViewCus title={data.title} desc={data.desc} />
-                )}
-                renderLeftHiddenRow={data => (
-                  <Button full onPress={() => this.update(data)}>
-                    <Icon active name="information-circle" />
-                  </Button>
-                )}
-                renderRightHiddenRow={(data, secId, rowId, rowMap) => (
-                  <Button
-                    full
-                    danger
-                    onPress={_ => this.deleteRow(data.id, secId, rowId, rowMap)}
-                  >
-                    <Icon active name="trash" />
-                  </Button>
-                )}
-              />
-              {/* Float button to add new note */}
-              <Fab
-                active={this.state.isActiveFab}
-                style={home.fabContainer}
-                position="bottomRight"
-                onPress={() => this.onPressFloatButton()}
-              >
-                {/* Icon add  */}
-                <Icon style={home.fabIcon} name="add" />
-              </Fab>
-            </View>
-          </Container>
+        <Container>
+          <Header />
+          <View style={home.container}>
+            {/* Custom Modal popup */}
+            {/* Custom spinner */}
+            <SpinnerCus visible={this.state.spinnerVisible} />
+            {/* List to show note list */}
+            <List
+              leftOpenValue={75}
+              rightOpenValue={-75}
+              dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+              renderRow={data => (
+                <ItemListViewCus title={data.title} desc={data.desc} />
+              )}
+              renderLeftHiddenRow={data => (
+                <Button full onPress={() => this.update(data)}>
+                  <Text>{this.state.txtEdit}</Text>
+                </Button>
+              )}
+              renderRightHiddenRow={(data, secId, rowId, rowMap) => (
+                <Button
+                  full
+                  danger
+                  onPress={_ => this.deleteRow(data.id, secId, rowId, rowMap)}
+                >
+                  <Text>{this.state.txtDel}</Text>
+                </Button>
+              )}
+            />
+            {/* Float button to add new note */}
+            <Fab
+              active={this.state.isActiveFab}
+              style={home.fabContainer}
+              position="bottomRight"
+              onPress={() => this.onPressFloatButton()}
+            >
+              {/* Icon add  */}
+              <Icon style={home.fabIcon} name="add" />
+            </Fab>
+          </View>
+        </Container>
       );
     }
   }
@@ -145,8 +161,4 @@ class Home extends Component {
   };
 }
 
-const mapStateToProps = (state) =>{
-  const {notes} = state
-  return {notes}
-}
-export default connect(mapStateToProps)(Home);
+export default Home;

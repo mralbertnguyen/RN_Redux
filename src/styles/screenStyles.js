@@ -2,14 +2,19 @@ import {StyleSheet, Dimensions} from 'react-native';
 
 const {height, width} = Dimensions.get('window');
 
+const yellowDark = "#F3CD10";
+const alphaGray = "rgba(112, 112, 112 , 0.56)";
+
 const home = StyleSheet.create({
     container: {
         flex : 1,
-        backgroundColor : 'white'
+        backgroundColor : 'white',
+        justifyContent : 'center',
+        alignItems : 'center'
     },
     // Float button style
     fabContainer: {
-        backgroundColor: "#5067FF"
+        backgroundColor: yellowDark
     },
     fabIcon:{
         fontSize : 30

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { KeyboardAvoidingView } from "react-native";
+import { KeyboardAvoidingView, DeviceEventEmitter } from "react-native";
 import { Container, Content, Form } from "native-base";
 
 import HeaderWithBackIcon from "../components/HeaderWithBackIcon";
@@ -26,19 +26,48 @@ class Note extends Component {
       txtDesc: null,
       lblBtnSave: "Save",
       lblBtnCancel: "Cancel",
+      txtId: null,
 
       spinnerVisible: false,
       modalVisible: false,
       modalMessage: null,
-      errorEmpty : "Please type title and desc"
+      errorEmpty: "Please type title and desc",
+
+      mode: "add"
     };
   }
+
+  componentWillMount() {
+    let { params } = this.props.navigation.state;
+
+    let getId = params ? params.id : null;
+    let getTitle = params ? params.title : null;
+    let getDesc = params ? params.title : null;
+
+    if ((getId != null) & (getTitle != null) & (getDesc != null)) {
+      this.setState({
+        txtTitle : getTitle,
+        txtDesc : getDesc,
+        txtId : getId
+
+      })
+      console.log(getId);
+      console.log(getTitle);
+      console.log(getDesc);
+    }
+  }
+
   render() {
-    const{goBack} = this.props.navigation;
+    const { goBack } = this.props.navigation;
     return (
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <Container>
-          <HeaderWithBackIcon title={this.state.headerTitle} />
+          <HeaderWithBackIcon
+            onPress={() => {
+              goBack();
+            }}
+            title={this.state.headerTitle}
+          />
           <Content>
             <Form>
               {/* Custom Modal popup */}
@@ -79,7 +108,7 @@ class Note extends Component {
               />
               {/* Button cancel */}
               <ButtonCus
-                onPress={() => goBack}
+                onPress={() => this.backToHome()}
                 txtLabel={this.state.lblBtnCancel}
               />
             </Form>
@@ -90,40 +119,48 @@ class Note extends Component {
   }
 
   saveNote = async () => {
+    let _id = this.state.txtId
     let _title = this.state.txtTitle;
     let _desc = this.state.txtDesc;
-    
-    console.log(_title + '\n' + _desc);
 
     let isTitleEmpty = handler.isEmpty(_title);
     let isDescEmpty = handler.isEmpty(_desc);
 
     if (!isTitleEmpty & !isDescEmpty) {
-      // Enable spinner
       this.setState({
         spinnerVisible: true
       });
-      // Call add note api
-      var noteResult = await apis.addNewNote(_title, _desc);
-      console.log(noteResult)
-      // Disable spinner
+
+      if(_id == null){
+        // Call add note api
+        var noteResultAdd = await apis.addNewNote(_title, _desc);
+
+      }else{
+        var noteResultUpdate = await apis.updateNote(_id, _title, _desc);
+      }
       this.setState({
         spinnerVisible: false
       });
+
       // Show popup
-      this.showResult(noteResult.message);
-    }else{
+      this.props.navigation.goBack();
+      // Emit event
+      DeviceEventEmitter.emit("update list");
+    } else {
       this.showResult(this.state.errorEmpty);
     }
   };
   showResult = message => {
-
     this.setState({
       modalVisible: true,
       modalMessage: message
     });
 
     // GET STATUS
+  };
+
+  backToHome = () => {
+    this.props.navigation.goBack();
   };
 }
 

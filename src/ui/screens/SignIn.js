@@ -24,7 +24,7 @@ class SignIn extends Component {
       lblUserName: "Username",
       lblPwd: "Password",
       lblRePwd: "Retype password",
-      lblLogin: "Login",
+      lblRegister: "Register",
       lblCancel: "Cancel",
       txtUserName: null,
       txtPwd: null,
@@ -78,7 +78,7 @@ class SignIn extends Component {
             <Form>
                 <ButtonCus
                     onPress = {this.handleRegister}
-                    txtLabel = {this.state.lblLogin}
+                    txtLabel = {this.state.lblRegister}
                 />
                 <ButtonCus
                     txtLabel = {this.state.lblCancel}
@@ -99,6 +99,9 @@ class SignIn extends Component {
     let pwd = handler.isEmpty(this.state.txtPwd);
     let rePwd = handler.isEmpty(this.state.txtRetypePwd);
 
+
+    console.log(usn + '\n' + pwd + '\n' + rePwd);
+
     if(!usn & !pwd & !rePwd){
       // Check pwd and retype same
       if(this.isSamePwd()){
@@ -109,10 +112,10 @@ class SignIn extends Component {
           this.setState({
             spinnerVisible : false,
           })
-          this.showResult(result);
-          
+          alert(result.message);
+          this.props.navigation.goBack();
         }catch(e){
-          console.log("error: "+e.getMessage());
+          console.log("error: "+e);
         }
       }else{
         console.log("Not Same");
