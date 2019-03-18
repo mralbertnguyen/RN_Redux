@@ -2,12 +2,14 @@ import React, { Component } from "react";
 
 import { Container, Content, Form } from "native-base";
 
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 
 import ItemEditText from "../components/ItemEditText";
 import ButtonCus from "../components/ButtonCus";
 import SpinnerCus from "../components/SpinnerCus";
 import ModalCus from "../components/ModalCus";
+
+import {login} from "../../styles/screenStyles";
 
 import DataHandler from "../../scripts/dataHandler";
 const handler = new DataHandler();
@@ -50,8 +52,9 @@ class Login extends Component {
 
   render() {
     return (
-      <Container>
-        <Content>
+      <Container style = {login.container}>
+        <Content >
+          <View style = {login.contentStyle}>
           <Form>
             <ModalCus
               visible={this.state.modalVisible}
@@ -81,7 +84,6 @@ class Login extends Component {
               }}
             />
           </Form>
-
           <Form>
             {/* Button login */}
             <ButtonCus
@@ -95,7 +97,9 @@ class Login extends Component {
               onPress={()=>{this.props.navigation.navigate('SignIn')}}
             />
           </Form>
-        </Content>
+        
+          </View>
+          </Content>
       </Container>
     );
   }

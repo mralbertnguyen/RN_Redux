@@ -11,7 +11,6 @@ import axios from "axios";
 export default class APIs {
   // register new user
   registerUser = async (usn, pwd) => {
-    console.log("u: " + usn + "\n" + pwd);
     try {
       let res = await axios
         .post(REGISTER_URL, {
@@ -22,12 +21,11 @@ export default class APIs {
           return response.data;
         })
         .catch(error => {
-          return error.response;
+          return error.response.data;
         });
 
       return res;
     } catch (e) {
-      console.log("Error: " + e); // undefined
       return e.response;
     }
   };

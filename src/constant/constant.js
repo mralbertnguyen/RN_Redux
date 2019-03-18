@@ -1,5 +1,5 @@
-const IP = "http://192.168.8.101/api/auth/";
-const REGISTER_URL = "register";
+const IP = "http://192.168.1.139/api/auth/";
+const REGISTER_URL = IP + "register";
 const LOGIN_URL = IP + "login";
 const ADD_NOTE_URL = IP + "addNote";
 const GET_ALL_NOTE_URL = IP + "getAllNote";

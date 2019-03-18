@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { YellowBox } from 'react-native';
+import { YellowBox, Alert } from 'react-native';
 import { Container, Content, Form, Label, Input,Item } from 'native-base';
 
 // Import Components
@@ -8,6 +8,7 @@ import ItemEditText from '../components/ItemEditText';
 import ButtonCus from '../components/ButtonCus';
 import SpinnerCus from '../components/SpinnerCus';
 import ModalCus from '../components/ModalCus';
+import {AlertCus} from '../components/AlertCus';
 // Import script 
 import DataHandler from '../../scripts/dataHandler';
 const handler = new DataHandler();
@@ -99,9 +100,6 @@ class SignIn extends Component {
     let pwd = handler.isEmpty(this.state.txtPwd);
     let rePwd = handler.isEmpty(this.state.txtRetypePwd);
 
-
-    console.log(usn + '\n' + pwd + '\n' + rePwd);
-
     if(!usn & !pwd & !rePwd){
       // Check pwd and retype same
       if(this.isSamePwd()){
@@ -112,17 +110,18 @@ class SignIn extends Component {
           this.setState({
             spinnerVisible : false,
           })
-          alert(result.message);
-          this.props.navigation.goBack();
+          Alert.alert(
+            'You need to...'
+          )
+          
         }catch(e){
-          console.log("error: "+e);
+          console.log("error: "+e.getMessage());
         }
       }else{
-        console.log("Not Same");
+        alert("Please check information again!")
       }
     }else{
-      console.log("Empty");
-    }
+      alert("Please type information!")    }
    }
 
    // Show result return from API
